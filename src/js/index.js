@@ -1,157 +1,126 @@
-'usestrict'
-//import {getAllIssues,getIssuesForRepo,createRepo} from "./services/github-manage-service"
+'usestrict';
 
-import "../sass/styles.scss";
-import GitHubManageController from "./controllers/github-manage-controller"
+// import {getAllIssues,getIssuesForRepo,createRepo} from "./services/github-manage-service"
+// const recastai = require('recastai');
+import '../sass/styles.scss';
+import WidgetTemplate from './widget';
+import GitHubManageController from './controllers/github-manage-controller';
+import RecastApiController from './controllers/recast-api-controller';
 
- let gitController = new GitHubManageController();
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    //console.log(document.getElementById("searchQuery").textContent());
-    document.getElementById("searchQuery").addEventListener("click",createWidget);
-    
+const widgetTemplate = new WidgetTemplate();
+const gitController = new GitHubManageController();
+const recastController = new RecastApiController();
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  // console.log(document.getElementById("searchQuery").textContent());
+  document.getElementById('searchQuery').addEventListener('click', invokeRecastApi);
 });
 
 
-function invokeRecastApi(){
-    // const recastai = require('recastai')
-    // const client = new recastai.request('YOUR_REQUEST_TOKEN', 'en')
+function invokeRecastApi() {
+  const searchQuery = document.getElementById('searchId').value;
+  let queryName = null;
+  let invokeMethodType = null;
+  recastController.invokeCreateRepositoryApi(searchQuery)
+    .then((data) => {
+      console.log(data);
+      if (data.results.entities.git_repo !== null) {
+        queryName = JSON.stringify(data.results.entities.git_repo[0].value);
+        console.log(`repository name :${JSON.stringify(data.results.entities.git_repo[0])}`);
+      }
 
-    // client.analyseText('hello')
-    // .then(function(res) {
-    //     if (res.intent()) { console.log('Intent: ', res.intent().slug) }
-    //     if (res.intent().slug === 'YOUR_EXPECTED_INTENT') {
-    //     // Do your code...
-    //     }
-    // })
+      invokeMethodType = JSON.stringify(data.results.entities.string[0].value);
+      methodToInvoke(queryName, invokeMethodType);
+
+      console.log(`query name :${JSON.stringify(data.results.entities.string[0].value)}`);
+    }).catch((error) => {
+      console.log('There has been a problem while Invoking Recast API: ', error.message);
+      window.confirm('Error While Invoking Recast API');
+    });
 }
 
 
-function createWidget(){
+function methodToInvoke(queryName, invokeMethodType) {
+  if (invokeMethodType === 'repo' || 'myrepo' || 'repository') {
+    // widgetTemplate.createRepositoryTemplate(queryName);
+    createRepositoryTemplate(queryName);
+  } else if (invokeMethodType === 'issue') {
 
-   var widgetDiv = document.createElement("div");
-   widgetDiv.setAttribute("id","createRepoWidget");
+  } else if (invokeMethodType === 'list' || 'display') {
 
-   var  cardDiv = document.createElement("div");
-   cardDiv.setAttribute("class","card");
+  } else if (invokeMethodType === 'reopen' || 'close') {
 
-   var cardBody = document.createElement("div");
-   cardBody.setAttribute("class","card-body");
-   cardBody.setAttribute("id","cardBody");
+  } else if (invokeMethodType === 'colloborator') {
 
-   var cardTitle = document.createElement("h5");
-   cardTitle.setAttribute("class","card-header");
-   cardTitle.setAttribute("id","cardHeader");
-   
-
-   var cardTitileTextNode = document.createTextNode("Create Repository");         // Create a text node
-   cardTitle.appendChild(cardTitileTextNode); 
-
-
-   cardDiv.append(cardTitle);
-   cardDiv.append(cardBody);
-   widgetDiv.append(cardDiv);
-
-
-  // document.getElementById('searchFeature').appendChild(widgetDiv);
-  var resp = "repo";
-  if(resp === "repo"){
-    createRepositoryTemplate();
-  }else if(resp === "issue"){
-    createIssueTemplate();
   }
-  
-    
-
 }
 
+function createRepositoryTemplate(queryName) {
+  $.get('./src/pages/createRepository.html', (result) => {
+    const widget = document.getElementById('createRepoWidget');
 
-function createRepositoryTemplate(){
-    $.get('./src/pages/createRepository.html', function(result){
-        
-        var widget = document.getElementById("createRepoWidget");
-        
-        if(widget !== null){
-           var parentObj = document.getElementById("searchFeature");
-           parentObj.removeChild(document.getElementById("createRepoWidget"));
-           //parentObj.append(result);  
-        }
-        
-           $('#searchFeature').append(result);
-           $('#createRepository').val($('#searchId').val());
-           $('#createRepository').ready(function() {
-                //console.log(document.getElementById("confirmId"));
-                document.getElementById("confirmId").addEventListener("click",createRepository);
-            });
+    if (widget !== null) {
+      const parentObj = document.getElementById('searchFeature');
+      parentObj.removeChild(document.getElementById('createRepoWidget'));
+      // parentObj.append(result);
+    }
+
+    $('#searchFeature').append(result);
+
+    $('#createRepository').val(queryName);
+    $('#createRepository').ready(() => {
+      console.log(document.getElementById('confirmId'));
+      document.getElementById('confirmId').addEventListener('click', createRepository.bind(null, queryName));
+    });
+  });
+}
+
+function createRepository(queryName) {
+  console.log('this is createRepository() method');
+  gitController.createRepository(queryName)
+    .then((data) => {
+      console.log(data);
+      window.confirm('Repository Created Successfully');
+      document.location.reload();
+    }).catch((error) => {
+      console.log('There has been a problem with your create repository operation: ', error.message);
+      window.confirm('Error While Creating Respository');
     });
 }
 
-
-
-
-function createIssueTemplate(){
-    $.get('./src/pages/createIssue.html', function(result){
-        var widget = document.getElementById("createIssueWidget");
-        
-        if(widget !== null){
-           var parentObj = document.getElementById("searchFeature");
-           parentObj.removeChild(document.getElementById("createIssueWidget"));
-           //parentObj.append(result);  
-        }
-        
-           $('#searchFeature').append(result);
-           $('#createIssue').val($('#searchId').val());
+function fetchAllIssuesForSpecificRepo() {
+  gitController.getAllIssuesForSpecificRepo()
+    .then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log('There has been a problem with your fetch all issues for given repo operation: ', error.message);
     });
 }
 
-
-function createRepository(){
-            gitController.createRepository()
-             .then(function(data){
-                 console.log(data);
-                 window.confirm("Repository Created Successfully");
-                 document.location.reload();
-             }).catch(function(error) {
-                 console.log('There has been a problem with your create repository operation: ', error.message);
-                 window.confirm("Error While Creating Respository");
-             });
+function createIssueForRepo() {
+  gitController.createIssueForRepo()
+    .then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log('There has been a problem with your create issue for repo operation: ', error.message);
+    });
 }
 
-function fetchAllIssuesForSpecificRepo(){
-   
-             gitController.getAllIssuesForSpecificRepo()
-             .then(function(data){
-                 console.log(data);
-             }).catch(function(error) {
-                 console.log('There has been a problem with your fetch all issues for given repo operation: ', error.message);
-             });
-             
+function updateIssue() {
+  gitController.updateIssue()
+    .then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log('There has been a problem with your update/open or reopen issue operation: ', error.message);
+    });
 }
 
-function createIssueForRepo(){
-        gitController.createIssueForRepo()
-             .then(function(data){
-                 console.log(data);
-             }).catch(function(error) {
-                 console.log('There has been a problem with your create issue for repo operation: ', error.message);
-             });
+function createCollaborator() {
+  gitController.createCollaborator()
+    .then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log('There has been a problem with your create collaborator operation: ', error.message);
+    });
 }
-
-function updateIssue(){
-            gitController.updateIssue()
-             .then(function(data){
-                 console.log(data);
-             }).catch(function(error) {
-                 console.log('There has been a problem with your update/open or reopen issue operation: ', error.message);
-             });
-}
-
-function createCollaborator(){
-            gitController.createCollaborator()
-             .then(function(data){
-                 console.log(data);
-             }).catch(function(error) {
-                 console.log('There has been a problem with your create collaborator operation: ', error.message);
-             });
-}
-

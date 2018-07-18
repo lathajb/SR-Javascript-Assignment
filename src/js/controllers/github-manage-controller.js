@@ -15,8 +15,8 @@ export default class GitHubManageController{
         }
 
 
-        createRepository(){
-            return gitservice.createRepository();
+        createRepository(queryName){
+            return gitservice.createRepository(queryName);
         }
 
         createIssueForRepo(){

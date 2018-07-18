@@ -1,13 +1,13 @@
 'usestrict'
 
 let url = 'https://api.github.com/';
-let accessToken = '322c1ef9d262d07d60eefe8dc14ba8353f2f58f6';
+let accessToken = 'Bearer ac9df253c9a2561558278fa3563916bc23c502eb';
 
 export default class GithubManageService{
 
     constructor(){
        console.log("Inside  GithubManageService layer");
-       const headers = { Authorization : 'Bearer 322c1ef9d262d07d60eefe8dc14ba8353f2f58f6'};
+       const headers = { Authorization : 'Bearer ac9df253c9a2561558278fa3563916bc23c502eb'};
        
     } 
 
@@ -21,7 +21,7 @@ export default class GithubManageService{
                 mode: "cors", // no-cors, cors, *same-origin
                 credentials: "same-origin", // include, same-origin, *omit
                 headers: {
-                    "Authorization": "Bearer 322c1ef9d262d07d60eefe8dc14ba8353f2f58f6",
+                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 //body: JSON.stringify(data), // body data type must match "Content-Type" header
@@ -32,11 +32,11 @@ export default class GithubManageService{
 
      /**************************Create repository starts here*********************************/
     // create a repository for a particular user using JQuery
-    createRepository() {
+    createRepository(queryName) {
         return new Promise (function(resolve, reject) {
 
                 let passData = JSON.stringify({
-                    "name": "JavaScript-Test-Repo18",
+                    "name": queryName,
                     "description": "This is your first repository",
                     "homepage": "https://github.com",
                     "private": false,
@@ -55,7 +55,7 @@ export default class GithubManageService{
                 data: passData,
                 dataType: "json",
                 mode: "cors",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'BEARER ' + accessToken); }
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'BEARER ac9df253c9a2561558278fa3563916bc23c502eb'); }
             }).done(function (res) {
                  resolve(res);
             }).fail(function (jqXHR, textStatus) {
@@ -90,7 +90,7 @@ export default class GithubManageService{
             xhr.open("POST", url + "repos/lathajb/JavaScript-Test-Repo/issues");
             //xhr.setRequestHeader("Cache-Control", "no-cache");
             //xhr.setRequestHeader("Postman-Token", "d0644c4f-fd44-4369-8ea9-d7984e4ae17b");
-            xhr.setRequestHeader("Authorization", "token 322c1ef9d262d07d60eefe8dc14ba8353f2f58f6");
+            xhr.setRequestHeader("Authorization", "token ac9df253c9a2561558278fa3563916bc23c502eb");
             //xhr.setRequestHeader("Access-Control-Allow-Origin","https://api.github.com");
             xhr.send(JSON.stringify(data));
 
@@ -119,7 +119,7 @@ export default class GithubManageService{
                 mode: "cors", // no-cors, cors, *same-origin
                 credentials: "same-origin", // include, same-origin, *omit
                 headers: {
-                    "Authorization": "Bearer 322c1ef9d262d07d60eefe8dc14ba8353f2f58f6",
+                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data), // body data type must match "Content-Type" header
@@ -139,7 +139,7 @@ export default class GithubManageService{
                 mode: "cors", // no-cors, cors, *same-origin
                 credentials: "same-origin", // include, same-origin, *omit
                 headers: {
-                    "Authorization": "Bearer 322c1ef9d262d07d60eefe8dc14ba8353f2f58f6",
+                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data), // body data type must match "Content-Type" header

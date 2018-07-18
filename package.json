@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "lint": "./node_modules/.bin/eslint ./src/js/*.js"
   },
   "keywords": [],
   "author": "",
@@ -13,18 +14,21 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
+    "bootstrap": "^4.1.2",
     "css-loader": "^1.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
     "html-webpack-plugin": "^3.2.0",
+    "jquery": "^3.3.1",
     "npm-sass": "^2.3.0",
+    "popper.js": "^1.14.3",
+    "recastai": "^3.7.0",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
     "webpack": "^4.16.0",
     "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4",
-    "popper.js": "^1.14.3",
-    "jquery": "^3.3.1",
-    "recastai": "^3.7.0",
-    "bootstrap": "^4.1.2"
+    "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
     "babel-core": "^6.26.3",
