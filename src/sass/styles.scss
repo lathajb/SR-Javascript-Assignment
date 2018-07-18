@@ -1,0 +1,54 @@
+@import 'variables';
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+@import 'bootswatch';
+
+// @import "../../node_modules/jquery/dist/jquery.min.js";
+// @import "/../node_modules/popper.js/dist/umd/popper.min.js";
+// @import "/../node_modules/bootstrap/dist/js/bootstrap.min.js";
+
+
+#searchFeature > .row {
+    justify-content: center;
+    margin: 20px;
+}
+
+#footerId {
+    text-align: center;
+}
+
+#createRepoWidget{
+    background-color: #ecf0f1;
+    height: 75%;
+}
+
+#createRepoWidget > .card > #cardHeader{
+   //text-align: center;
+}
+
+#createRepoWidget > .card > #cardBody{
+   //text-align: center;
+   height: 75%;
+}
+
+#buttonSection {
+    text-align: center;
+}
+
+#input-box-size{
+    width: 75%;
+}
+
+.alignCenter{
+    text-align: center;
+}
+
+.alignLeft{
+    text-align: left;
+}
+
+.alignRight{
+    text-align: right;
+}
+
+

@@ -1,0 +1,57 @@
+<div class="createIssueWidget" id="createIssueWidget">
+    <div class="card">
+        <div class="card-header" id="cardHeader">
+            <h4>Create Issue</h4>
+        </div>
+        <div class="card-body" id="cardBody">
+            <!--<h5 class="card-title">Special title treatment</h5>-->
+
+
+            <form>
+                <div class="form-group row">
+                    <label for="createIssue" class="col-sm-2 col-form-label alignLeft">Issue</label>
+                    <div class="col-md-10" id="input-box-size">
+                        <input type="text" class="form-control" id="createIssue" placeholder="Enter issue name" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="issueDescription" class="col-sm-2 col-form-label alignLeft">Description</label>
+                    <div class="col-md-10" id="input-box-size">
+                        <input type="text" class="form-control" id="issueDescription">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="labels" class="col-sm-2 col-form-label alignLeft">Labels</label>
+
+                    <div class="dropdown col-md-10">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Dropdown link
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6 alignRight">
+                        <button type="button" id="confirmId">Confirm</button>
+                    </div>
+                    <div class="col-md-6 alignLeft">
+                        <button type="button" id="cancelId">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="card-footer text-muted" id="buttonSection">
+
+        </div>
+    </div>
+</div>
