@@ -12,28 +12,96 @@ const widgetTemplate = new WidgetTemplate();
 const gitController = new GitHubManageController();
 const recastController = new RecastApiController();
 
+
+
+
+let allIssues = null;
+let reqObj = {
+  "user": "lathajb",
+  "repoName": null
+}
+let issueReqObj = {
+  "user": "lathajb",
+  "repoName": null,
+  "issueName": null,
+  "issueDesc": null,
+  "id": null
+}
+let updateReqObject = {
+  "user": "lathajb",
+  "issueName": null,
+  "issueDesc": null,
+  "issueStatus": null,
+  "id": null,
+  "repo": null
+}
+
+let collaboratorReqObj = {
+  "user": "lathajb",
+  "repoName": null,
+  "collaborator": "sagarpatke"
+}
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
   // console.log(document.getElementById("searchQuery").textContent());
+  $('[data-toggle="tooltip"]').tooltip();
+  $().alert();
   document.getElementById('searchQuery').addEventListener('click', invokeRecastApi);
 });
 
 
+function sampletest() {
+  methodToInvoke('issue1', 'colloborator');
+}
+
 function invokeRecastApi() {
   const searchQuery = document.getElementById('searchId').value;
-  let queryName = null;
-  let invokeMethodType = null;
+  var queryName = null;
+  var invokeMethodType = null;
   recastController.invokeCreateRepositoryApi(searchQuery)
     .then((data) => {
       console.log(data);
-      if (data.results.entities.git_repo !== null) {
-        queryName = JSON.stringify(data.results.entities.git_repo[0].value);
+      if (typeof data.results.entities.git_repo !== 'undefined' && data.results.entities.git_repo !== null) {
+        queryName = data.results.entities.git_repo[0].value;
         console.log(`repository name :${JSON.stringify(data.results.entities.git_repo[0])}`);
+        invokeMethodType = data.results.entities.string[0].value;
+      }
+      if (typeof data.results.entities.git_issue !== 'undefined' && data.results.entities.git_issue !== null) {
+        queryName = data.results.entities.git_issue[0].value;
+        console.log(`repository name :${JSON.stringify(data.results.entities.git_issue[0])}`);
+        invokeMethodType = data.results.entities.string[0].value;
       }
 
-      invokeMethodType = JSON.stringify(data.results.entities.string[0].value);
+      if (typeof data.results.entities.fetch_issues !== 'undefined' && data.results.entities.fetch_issues !== null) {
+        invokeMethodType = data.results.entities.fetch_issues[0].value;
+        console.log(`repository name :${JSON.stringify(data.results.entities.fetch_issues[0])}`);
+        
+      }
+
+      if (typeof data.results.entities.fetch_issues !== 'undefined' && data.results.entities.fetch_issues !== null) {
+        invokeMethodType = data.results.entities.fetch_issues[0].value;
+        console.log(`repository name :${JSON.stringify(data.results.entities.fetch_issues[0])}`);
+        
+      }
+
+      if (typeof data.results.entities.update_issue !== 'undefined' && data.results.entities.update_issue !== null) {
+        invokeMethodType = data.results.entities.update_issue[0].value;
+        console.log(`repository name :${JSON.stringify(data.results.entities.update_issue[0])}`);
+        
+      }
+
+      if (typeof data.results.entities.add_collab !== 'undefined' && data.results.entities.add_collab !== null) {
+        invokeMethodType = data.results.entities.add_collab[0].value;
+        console.log(`repository name :${JSON.stringify(data.results.entities.add_collab[0])}`);
+        
+      }
+
+      
+      
       methodToInvoke(queryName, invokeMethodType);
 
-      console.log(`query name :${JSON.stringify(data.results.entities.string[0].value)}`);
+      //console.log(`query name :${JSON.stringify(data.results.entities.string[0].value)}`);
     }).catch((error) => {
       console.log('There has been a problem while Invoking Recast API: ', error.message);
       window.confirm('Error While Invoking Recast API');
@@ -42,41 +110,32 @@ function invokeRecastApi() {
 
 
 function methodToInvoke(queryName, invokeMethodType) {
-  if (invokeMethodType === 'repo' || 'myrepo' || 'repository') {
-    // widgetTemplate.createRepositoryTemplate(queryName);
-    createRepositoryTemplate(queryName);
-  } else if (invokeMethodType === 'issue') {
 
-  } else if (invokeMethodType === 'list' || 'display') {
 
-  } else if (invokeMethodType === 'reopen' || 'close') {
-
-  } else if (invokeMethodType === 'colloborator') {
+  if (invokeMethodType === "repo" || invokeMethodType === "myrepo" || invokeMethodType === "repository") {
+    widgetTemplate.createRepositoryTemplate(queryName);
+  } else if (invokeMethodType === "issue" || invokeMethodType === "create issue") {
+    issueReqObj.issueName = queryName;
+    widgetTemplate.createIssueTemplate(issueReqObj);
+  } else if (invokeMethodType === "read" || invokeMethodType === "display" || invokeMethodType === "fetch" || invokeMethodType === "find") {
+    widgetTemplate.fetchIssuesForRepositoryTemplate();
+    // document.addEventListener("DOMContentLoaded", function(event) {
+    //   console.log("DOM fully loaded and parsed");
+    //   document.getElementById('confirmId').addEventListener('click', fetchAllIssuesForSpecificRepo);
+    // });
+  } else if (invokeMethodType === "reopen" || invokeMethodType === "close" || invokeMethodType === "update" ||  invokeMethodType === "modify") {
+    widgetTemplate.updateIssue(issueReqObj);
+  } else if (invokeMethodType === 'collaborator') {
+    widgetTemplate.createCollaborator(issueReqObj);
 
   }
 }
 
-function createRepositoryTemplate(queryName) {
-  $.get('./src/pages/createRepository.html', (result) => {
-    const widget = document.getElementById('createRepoWidget');
-
-    if (widget !== null) {
-      const parentObj = document.getElementById('searchFeature');
-      parentObj.removeChild(document.getElementById('createRepoWidget'));
-      // parentObj.append(result);
-    }
-
-    $('#searchFeature').append(result);
-
-    $('#createRepository').val(queryName);
-    $('#createRepository').ready(() => {
-      console.log(document.getElementById('confirmId'));
-      document.getElementById('confirmId').addEventListener('click', createRepository.bind(null, queryName));
-    });
-  });
+function fetchIssuesList(allIssues) {
+  widgetTemplate.fetchIssuesTableTemplate(allIssues);
 }
 
-function createRepository(queryName) {
+export function createRepository(queryName) {
   console.log('this is createRepository() method');
   gitController.createRepository(queryName)
     .then((data) => {
@@ -89,38 +148,128 @@ function createRepository(queryName) {
     });
 }
 
-function fetchAllIssuesForSpecificRepo() {
-  gitController.getAllIssuesForSpecificRepo()
+export function fetchAllIssues() {
+  gitController.getAllIssues()
     .then((data) => {
-      console.log(data);
+      console.log(data); allIssues = data;
+      fetchIssuesList(allIssues);
     }).catch((error) => {
       console.log('There has been a problem with your fetch all issues for given repo operation: ', error.message);
     });
 }
 
-function createIssueForRepo() {
-  gitController.createIssueForRepo()
+
+export function fetchAllIssuesForSpecificRepo() {
+  var repoName = document.getElementById('repositoryName').value;
+
+  reqObj.repoName = repoName;
+  gitController.getAllIssuesForSpecificRepo(reqObj.user, reqObj.repoName)
     .then((data) => {
-      console.log(data);
+      console.log(data); allIssues = data;
+      fetchIssuesList(allIssues);
+    }).catch((error) => {
+      console.log('There has been a problem with your fetch all issues for given repo operation: ', error.message);
+    });
+}
+
+export function createIssueForRepo(issueReqObj) {
+
+  var repoName = document.getElementById('repositoryName').value;
+  issueReqObj.repoName = repoName;
+  issueReqObj.issueDesc = document.getElementById('issueDescription').value
+  gitController.createIssueForRepo(issueReqObj)
+    .then((data) => {
+      console.log(JSON.stringify(data));
+      window.confirm('Issue Created Successfully');
+      document.location.reload();
     }).catch((error) => {
       console.log('There has been a problem with your create issue for repo operation: ', error.message);
+      window.confirm('Error While Creating Issue Successfully');
     });
 }
 
-function updateIssue() {
-  gitController.updateIssue()
+export function updateIssue(updateReqObject) {
+  updateReqObject.id = document.getElementById('issueNumber').value;
+  updateReqObject.issueDesc = document.getElementById('issueDescription').value;
+  updateReqObject.issueName = document.getElementById('issueName').value;
+  updateReqObject.issueStatus = document.getElementById('issueStatus').value;
+  updateReqObject.repo = document.getElementById('repo').value;
+
+  gitController.updateIssue(updateReqObject)
     .then((data) => {
       console.log(data);
+      window.confirm('Issue Updated Successfully');
+      document.location.reload();
     }).catch((error) => {
       console.log('There has been a problem with your update/open or reopen issue operation: ', error.message);
+      window.confirm('Error While Updating Issue Successfully');
     });
 }
 
-function createCollaborator() {
-  gitController.createCollaborator()
+export function createCollaborator(collaboratorReqObj) {
+  collaboratorReqObj.repoName = document.getElementById('repoName').value;
+
+  gitController.createCollaborator(collaboratorReqObj)
     .then((data) => {
       console.log(data);
+
+      if (data.message !== null && data.message === "Not Found") {
+        window.confirm('Repository or Collaborator Not Found');
+        var msg = 'Repository or Collaborator Not Found';
+        renderConfirmMsg(msg);
+      } else {
+        window.confirm('Collaborator Created Successfully');
+       // document.location.reload();
+       var msg = 'Collaborator Created Successfully';
+        renderConfirmMsg(msg);
+      }
+
+      //document.location.reload();
     }).catch((error) => {
       console.log('There has been a problem with your create collaborator operation: ', error.message);
+      window.confirm('Error While Creating Collaborator Successfully');
     });
 }
+
+
+function closeMsgBox(){
+   $().alert();
+}
+
+
+function renderConfirmMsg(msg){
+
+  var succesMsg = document.createElement('div');
+  succesMsg.setAttribute('class','alert alert-success alert-dismissible fade show w-100');
+  succesMsg.setAttribute('role','alert');
+
+
+  var dangerMsg = document.createElement('div')
+  dangerMsg.setAttribute('class','alert alert-danger alert-dismissible fade show w-100');
+  dangerMsg.setAttribute('role','alert');
+  
+
+  var strong = document.createElement('strong');
+  var textNode = document.createTextNode(msg);
+  strong.append(textNode);
+
+  var closeButton = document.createElement('button');
+  closeButton.setAttribute('type','button');
+  closeButton.setAttribute('class','close');
+  closeButton.setAttribute('aria-label','Close');
+  //closeButton.setAttribute('onclick','closeMsgBox()');
+
+  var xicon = document.createTextNode('x');
+  var spanDiv = document.createElement('span');
+  spanDiv.setAttribute('aria-hidden','true');
+  spanDiv.append(xicon);
+  closeButton.append(spanDiv);
+
+  succesMsg.append(strong);
+  succesMsg.append(closeButton);
+
+  var header = document.getElementById('responseMsg');
+  header.append(succesMsg);  
+}
+
+

@@ -14,19 +14,34 @@ export default class GithubManageService{
 
     /**************************Fetch issues for specific repo starts here*********************************/
    // Fetch all issues from all repositories
-   getAllIssuesForSpecificRepo() {
-        
-            return fetch(url + 'issues', {
-                method: "GET", // *GET, POST, PUT, DELETE, etc.
-                mode: "cors", // no-cors, cors, *same-origin
-                credentials: "same-origin", // include, same-origin, *omit
+   getAllIssuesForSpecificRepo(user,repoName) {
+           
+            return fetch(url + "repos/"+user+"/"+repoName+"/issues", {
+                method: "GET",
+                mode: "cors",
+                credentials: "same-origin", 
                 headers: {
                     "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
                     "Content-Type": "application/json; charset=utf-8",
                 },
-                //body: JSON.stringify(data), // body data type must match "Content-Type" header
             })
-            .then(response => response.json()) // parses response to JSON
+            .then(response => response.json()) 
+            .catch(error => console.error(`Fetch Error =\n`, error));
+    }
+
+
+    getAllIssues(user){
+            return fetch(url + "issues", {
+                method: "GET", 
+                mode: "cors", 
+                credentials: "same-origin", 
+                headers: {
+                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                
+            })
+            .then(response => response.json()) 
             .catch(error => console.error(`Fetch Error =\n`, error));
     }
 
@@ -67,7 +82,31 @@ export default class GithubManageService{
             
      }
      /**************************Create repository ends here*********************************/
-     createIssueForRepo(){
+
+      createIssueForRepo(issueObj){
+        
+            var data = { 
+               "title": issueObj.issueName,
+               "body": issueObj.issueDesc,
+               "assignees": ["lathajb" ],
+               "labels": ["bug"] 
+            };
+            return fetch(url + "repos/"+issueObj.user+"/"+issueObj.repoName+"/issues", {
+                method: "POST", 
+                mode: "cors", 
+                credentials: "same-origin", 
+                headers: {
+                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .catch(error => console.error(`Fetch Error =\n`, error));
+     }
+
+
+     createTempIssueForRepo(){
           
            var resp = null;
            var data = { 
@@ -98,53 +137,53 @@ export default class GithubManageService{
      }
 
    /**************************Fetch issues for specific repo starts here*********************************/
-   updateIssue() {
+   updateIssue(updateReqObject) {
 
             var data ={
                 
-                    "title": "Found a bug",
-                    "body": "I'm having a problem with new this.",
+                    "title": updateReqObject.issueName,
+                    "body": updateReqObject.issueDesc,
                     "assignees": [
                         "lathajb"
                     ],
                     
-                    "state": "open",
+                    "state": updateReqObject.issueStatus,
                     "labels": [
                         "bug"
                     ]
               }
         
-            return fetch(url + 'repos/lathajb/JavaScript-Test-Repo/issues/1', {
-                method: "PATCH", // *GET, POST, PUT, DELETE, etc.
-                mode: "cors", // no-cors, cors, *same-origin
-                credentials: "same-origin", // include, same-origin, *omit
+            return fetch(url + "repos/"+updateReqObject.user+"/"+updateReqObject.repo+"/issues/"+updateReqObject.id, {
+                method: "PATCH", 
+                mode: "cors", 
+                credentials: "same-origin", 
                 headers: {
                     "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
                     "Content-Type": "application/json; charset=utf-8",
                 },
-                body: JSON.stringify(data), // body data type must match "Content-Type" header
+                body: JSON.stringify(data), 
             })
-            .then(response => response.json()) // parses response to JSON
+            .then(response => response.json()) 
             .catch(error => console.error(`Fetch Error =\n`, error));
     }
 
 
     /**************************create collaborators starts here*********************************/
-   createCollaborator() {
+   createCollaborator(collaboratorReqObj) {
 
             var data ={};
         
-            return fetch(url + 'repos/lathajb/JavaScript-Test-Repo/collaborators/sagarpatke', {
-                method: "PUT", // *GET, POST, PUT, DELETE, etc.
-                mode: "cors", // no-cors, cors, *same-origin
-                credentials: "same-origin", // include, same-origin, *omit
+            return fetch(url + "repos/"+collaboratorReqObj.user+"/"+collaboratorReqObj.repoName+"/collaborators/"+collaboratorReqObj.collaborator, {
+                method: "PUT", 
+                mode: "cors", 
+                credentials: "same-origin", 
                 headers: {
                     "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
                     "Content-Type": "application/json; charset=utf-8",
                 },
-                body: JSON.stringify(data), // body data type must match "Content-Type" header
+                body: JSON.stringify(data),
             })
-            .then(response => response.json()) // parses response to JSON
+            .then(response => response.json())
             .catch(error => console.error(`Fetch Error =\n`, error));
     }
 }

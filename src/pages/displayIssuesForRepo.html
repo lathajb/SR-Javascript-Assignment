@@ -1,28 +1,22 @@
-<div class="createRepoWidget" id="createRepoWidget">
+<div class="fetchIssues" id="fetchIssues">
     <div class="card">
         <div class="card-header" id="cardHeader">
-            <h4>Create Repository</h4>
+            <h4>Issues</h4>
         </div>
         <div class="card-body" id="cardBody">
             <!--<h5 class="card-title">Special title treatment</h5>-->
 
 
-            <form>
+            <form id="displayIssues">
+                
                 <div class="form-group row">
-                    <label for="createRepository" class="col-sm-2 col-form-label alignCenter">Repository</label>
+                    <label for="repositoryName" class="col-sm-2 col-form-label alignLeft">Repository</label>
                     <div class="col-md-10" id="input-box-size">
-                        <input type="text" class="form-control" id="createRepository" placeholder="Enter repository name" readonly>
+                        <input type="text" class="form-control" id="repositoryName" placeholder="Enter repository name">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="repoDescription" class="col-sm-2 col-form-label alignCenter">Description</label>
-                    <div class="col-md-10" id="input-box-size">
-                        <input type="text" class="form-control" id="repoDescription">
-                    </div>
-                </div>
-
-                 <div class="form-group row">
                     <div class="col-md-6 alignRight">
                         <button type="button" id="confirmId" data-toggle="tooltip" title="Confirm">Confirm</button>
                     </div>
@@ -30,11 +24,25 @@
                         <button type="button" id="cancelId" data-toggle="tooltip" title="Cancel">Cancel</button>
                     </div>
                 </div>
+
+                <div class="table-responsive" id="issuesListTable">
+                    <table class="table table-md">
+                    <thead id="issues-heading">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Issue Name</th>
+                        <th scope="col">Description</th>
+                       </tr>
+                    </thead>
+                    <tbody id="issues-details">
+                        
+                    </tbody>
+                    </table>
+                </div>
             </form>
-            
         </div>
         <div class="card-footer text-muted" id="buttonSection">
-            
+                
         </div>
     </div>
 </div>

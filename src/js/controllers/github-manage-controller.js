@@ -10,8 +10,12 @@ export default class GitHubManageController{
             console.log("Inside GitHubManageController Layer");
         }
     
-        getAllIssuesForSpecificRepo(){
-            return gitservice.getAllIssuesForSpecificRepo();
+        getAllIssuesForSpecificRepo(user,repoName){
+            return gitservice.getAllIssuesForSpecificRepo(user,repoName);
+        }
+
+        getAllIssues(){
+            return gitservice.getAllIssues(user);
         }
 
 
@@ -19,16 +23,16 @@ export default class GitHubManageController{
             return gitservice.createRepository(queryName);
         }
 
-        createIssueForRepo(){
-             return gitservice.createIssueForRepo();  
+        createIssueForRepo(issueObj){
+             return gitservice.createIssueForRepo(issueObj);  
         }
 
-        updateIssue(){
-             return gitservice.updateIssue();  
+        updateIssue(updateReqObject){
+             return gitservice.updateIssue(updateReqObject);  
         }
 
-        createCollaborator(){
-             return gitservice.createCollaborator();  
+        createCollaborator(collaboratorReqObj){
+             return gitservice.createCollaborator(collaboratorReqObj);  
         }
 
 }
