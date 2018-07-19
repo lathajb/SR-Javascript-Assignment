@@ -13,6 +13,14 @@
     margin: 20px;
 }
 
+.bgcolorfirst{
+    background-color: hotpink;
+}
+
+.bgcolorsecond{
+    background-color:orangered;
+}
+
 #footerId {
     text-align: center;
 }
@@ -23,9 +31,8 @@
 }
 
 #footerId{
-    height: 30%;
     background-color:#ecf0f1; 
-    margin: 10px;
+    margin-top: 10px;
 }
 
 #createRepoWidget > .card > #cardBody{
@@ -45,6 +52,10 @@
     text-align: center;
 }
 
+#repoName{
+    margin: auto;
+}
+
 .alignLeft{
     text-align: left;
 }
@@ -52,5 +63,6 @@
 .alignRight{
     text-align: right;
 }
+
 
 

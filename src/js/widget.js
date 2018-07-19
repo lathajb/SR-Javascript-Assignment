@@ -60,6 +60,8 @@ export default class WidgetTemplate {
       }
 
       $('#searchFeature').append(result);
+      $('#issueNumber').val(updateIssueReq.id);
+      $('#repo').val(updateIssueReq.repo);
       $('#confirmId').ready(() => {
         console.log(document.getElementById('confirmId'));
         document.getElementById('confirmId').addEventListener('click', updateIssue.bind(null, updateIssueReq));

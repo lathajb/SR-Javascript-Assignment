@@ -9,28 +9,28 @@
 
             <form>
                 <div class="form-group row">
-                    <label for="createIssue" class="col-sm-2 col-form-label alignLeft">Issue</label>
-                    <div class="col-md-10" id="input-box-size">
+                    <label for="createIssue" class="col-sm-2 col-form-label alignCenter">Issue</label>
+                    <div class="col-md-10 alignCenter" >
                         <input type="text" class="form-control" id="createIssue" placeholder="Enter issue name" readonly>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="issueDescription" class="col-sm-2 col-form-label alignLeft">Description</label>
-                    <div class="col-md-10" id="input-box-size">
+                    <label for="issueDescription" class="col-sm-2 col-form-label alignCenter">Description</label>
+                    <div class="col-md-10 alignCenter">
                         <input type="text" class="form-control" id="issueDescription">
                     </div>
                 </div>
 
                  <div class="form-group row">
-                    <label for="repositoryName" class="col-sm-2 col-form-label alignLeft">Repository</label>
-                    <div class="col-md-10" id="input-box-size">
+                    <label for="repositoryName" class="col-sm-2 col-form-label alignCenter">Repository</label>
+                    <div class="col-md-10 alignCenter" >
                         <input type="text" class="form-control" id="repositoryName">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="labels" class="col-sm-2 col-form-label alignLeft">Labels</label>
+                    <label for="labels" class="col-sm-2 col-form-label alignCenter">Labels</label>
 
                     <div class="dropdown col-md-10">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
@@ -47,11 +47,9 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-md-6 alignRight">
-                        <button type="button" id="confirmId" data-toggle="tooltip" title="Confirm">Confirm</button>
-                    </div>
-                    <div class="col-md-6 alignLeft">
-                        <button type="button" id="cancelId" data-toggle="tooltip" title="Cancel">Cancel</button>
+                    <div class="col-sm-12 alignCenter">
+                        <button type="button" class="btn" id="confirmId" data-toggle="tooltip" title="Confirm">Confirm</button>
+                        <button type="button" class="btn" id="cancelId" data-toggle="tooltip" title="Cancel">Cancel</button>
                     </div>
                 </div>
             </form>

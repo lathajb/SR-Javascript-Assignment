@@ -16,18 +16,18 @@ const recastController = new RecastApiController();
 
 
 let allIssues = null;
-let reqObj = {
+var reqObj = {
   "user": "lathajb",
   "repoName": null
 }
-let issueReqObj = {
+var issueReqObj = {
   "user": "lathajb",
   "repoName": null,
   "issueName": null,
   "issueDesc": null,
   "id": null
 }
-let updateReqObject = {
+var updateReqObject = {
   "user": "lathajb",
   "issueName": null,
   "issueDesc": null,
@@ -36,7 +36,7 @@ let updateReqObject = {
   "repo": null
 }
 
-let collaboratorReqObj = {
+var collaboratorReqObj = {
   "user": "lathajb",
   "repoName": null,
   "collaborator": "sagarpatke"
@@ -57,47 +57,54 @@ function invokeRecastApi() {
   recastController.invokeCreateRepositoryApi(searchQuery)
     .then((data) => {
       console.log(data);
-      if (typeof data.results.entities.git_repo !== 'undefined' && data.results.entities.git_repo !== null) {
-        queryName = data.results.entities.git_repo[0].value;
-        console.log(`repository name :${JSON.stringify(data.results.entities.git_repo[0])}`);
-        invokeMethodType = data.results.entities.string[0].value;
-      }
-      if (typeof data.results.entities.git_issue !== 'undefined' && data.results.entities.git_issue !== null) {
-        queryName = data.results.entities.git_issue[0].value;
-        console.log(`repository name :${JSON.stringify(data.results.entities.git_issue[0])}`);
-        invokeMethodType = data.results.entities.string[0].value;
-      }
+      
+      if(typeof data.results.intents[0].slug !== 'undefined' &&  data.results.intents[0].slug !== null ){
+          
+          
+          if (data.results.intents[0].slug === 'create-repo' && typeof data.results.entities.git_repo !== 'undefined' && data.results.entities.git_repo !== null) {
+            queryName = data.results.entities.git_repo[0].value;
+            console.log(`repository name :${JSON.stringify(data.results.entities.git_repo[0])}`);
+            invokeMethodType = data.results.entities.string[0].value;
+          }
+          if ( data.results.intents[0].slug === 'create-issue' && typeof data.results.entities.git_issue !== 'undefined' && data.results.entities.git_issue !== null) {
+            queryName = data.results.entities.git_issue[0].value;
+            console.log(`repository name :${JSON.stringify(data.results.entities.git_issue[0])}`);
+            invokeMethodType = data.results.entities.string[0].value;
+          }
 
-      if (typeof data.results.entities.fetch_issues !== 'undefined' && data.results.entities.fetch_issues !== null) {
-        invokeMethodType = data.results.entities.fetch_issues[0].value;
-        console.log(`repository name :${JSON.stringify(data.results.entities.fetch_issues[0])}`);
-        
-      }
+          if (data.results.intents[0].slug === 'fetch-repo-issues' && typeof data.results.entities.fetch_issues !== 'undefined' && data.results.entities.fetch_issues !== null) {
+            invokeMethodType = data.results.entities.fetch_issues[0].value;
+            console.log(`repository name :${JSON.stringify(data.results.entities.fetch_issues[0])}`);
+            
+          }
 
-      if (typeof data.results.entities.fetch_issues !== 'undefined' && data.results.entities.fetch_issues !== null) {
-        invokeMethodType = data.results.entities.fetch_issues[0].value;
-        console.log(`repository name :${JSON.stringify(data.results.entities.fetch_issues[0])}`);
-        
-      }
+          if (data.results.intents[0].slug === 'update-issue' && typeof data.results.entities.update_issue !== 'undefined' && data.results.entities.update_issue !== null) {
+            invokeMethodType = data.results.entities.update_issue[0].value;
+            console.log(`repository name :${JSON.stringify(data.results.entities.update_issue[0])}`);
+            if(data.results.entities.git_repo[0] !== null)
+            updateReqObject.repo = data.results.entities.git_repo[0].value;
 
-      if (typeof data.results.entities.update_issue !== 'undefined' && data.results.entities.update_issue !== null) {
-        invokeMethodType = data.results.entities.update_issue[0].value;
-        console.log(`repository name :${JSON.stringify(data.results.entities.update_issue[0])}`);
-        
-      }
+            if(data.results.entities.number[0] !== null)
+            updateReqObject.id = data.results.entities.number[0].scalar;
+          }
 
-      if (typeof data.results.entities.add_collab !== 'undefined' && data.results.entities.add_collab !== null) {
-        invokeMethodType = data.results.entities.add_collab[0].value;
-        console.log(`repository name :${JSON.stringify(data.results.entities.add_collab[0])}`);
-        
+          if ( data.results.intents[0].slug === 'create-collaborator' && 
+               typeof data.results.entities.git_collaborator !== 'undefined' && 
+               data.results.entities.git_collaborator !== null) {
+               invokeMethodType = data.results.entities.git_collaborator[0].value;
+            console.log(`repository name :${JSON.stringify(data.results.entities.git_collaborator[0])}`);
+            
+          }
       }
+      
 
       methodToInvoke(queryName, invokeMethodType);
 
       //console.log(`query name :${JSON.stringify(data.results.entities.string[0].value)}`);
     }).catch((error) => {
       console.log('There has been a problem while Invoking Recast API: ', error.message);
-      window.confirm('Error While Invoking Recast API');
+      //window.confirm('Error While Invoking Recast API');
+      renderConfirmMsg(error.message,"error");
     });
 }
 
@@ -112,12 +119,8 @@ function methodToInvoke(queryName, invokeMethodType) {
     widgetTemplate.createIssueTemplate(issueReqObj);
   } else if (invokeMethodType === "read" || invokeMethodType === "display" || invokeMethodType === "fetch" || invokeMethodType === "find") {
     widgetTemplate.fetchIssuesForRepositoryTemplate();
-    // document.addEventListener("DOMContentLoaded", function(event) {
-    //   console.log("DOM fully loaded and parsed");
-    //   document.getElementById('confirmId').addEventListener('click', fetchAllIssuesForSpecificRepo);
-    // });
-  } else if (invokeMethodType === "reopen" || invokeMethodType === "close" || invokeMethodType === "update" ||  invokeMethodType === "modify") {
-    widgetTemplate.updateIssue(issueReqObj);
+  } else if (invokeMethodType === "reopen" || invokeMethodType === "close" || invokeMethodType === "update" ||  invokeMethodType === "modify" || invokeMethodType === "change") {
+    widgetTemplate.updateIssue(updateReqObject);
   } else if (invokeMethodType === 'collaborator') {
     widgetTemplate.createCollaborator(collaboratorReqObj);
 
@@ -148,8 +151,8 @@ export function createRepository(queryName) {
     }).catch((error) => {
       console.log('There has been a problem with your create repository operation: ', error.message);
       //window.confirm('Error While Creating Respository');
-      var msg = 'Error While Creating Collaborator';
-       renderConfirmMsg(msg,"error");
+      var msg = 'Error While Creating Repository';
+       renderConfirmMsg(error.message,"error");
     });
 }
 
@@ -275,17 +278,23 @@ export function createCollaborator(collaboratorReqObj) {
 
 
 function renderConfirmMsg(msg,msgType){
-
+  var respMsg = document.getElementById('msgRendered');
+  var header = document.getElementById('responseMsg');
+  if(respMsg !== null){
+    header.removeChild(respMsg);
+  }
   var msgRendered = document.createElement('div')
   
   if(msgType === "error"){
     
     msgRendered.setAttribute('class','alert alert-danger alert-dismissible fade show w-100');
     msgRendered.setAttribute('role','alert');
+    msgRendered.setAttribute('id','msgRendered');
   }else if( msgType === "success"){
     
     msgRendered.setAttribute('class','alert alert-success alert-dismissible fade show w-100');
     msgRendered.setAttribute('role','alert');
+    msgRendered.setAttribute('id','msgRendered');
   }
 
   var strong = document.createElement('strong');
@@ -309,6 +318,6 @@ function renderConfirmMsg(msg,msgType){
   msgRendered.append(strong);
   msgRendered.append(closeButton);
 
-  var header = document.getElementById('responseMsg');
+ 
   header.append(msgRendered);  
 }

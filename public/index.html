@@ -11,12 +11,12 @@
 
 <body id="bodyId">
 
-    <div class="container-fluid">
+    <div class="container-fluid sticky-top">
         <header>
             <!-- Image and text -->
             <nav class="navbar navbar-light sticky-top bg-light">
                 <a class="navbar-brand" href="#" data-toggle="tooltip" title="GitHub">
-                    <img src="src/img/GitHub-Mark-32px.png" width="30" height="30" class="d-inline-block align-top" alt="">                    GitHub
+                    <img src="src/img/GitHub-Mark-32px.png" class="d-inline-block align-top" alt="">                    GitHub
                 </a>
                 <a class="navbar-brand" href="#" data-toggle="tooltip" title="Login">
                     <i class="fa fa-user"></i>
@@ -27,31 +27,44 @@
 
     </div>
 
-    <div class="container h-100" id="searchFeature">
+    <div class="container" id="searchFeature">
         <div class="row">
-            <div class="form-inline w-75">
+            <!--<div class="form-inline">-->
 
-                <!--<div class="col-md-8" id="search-content">-->
-                   <input type="text" id="searchId" 
-                          class="form-control w-75" 
-                          placeholder="Please enter query here" 
-                          aria-label="Please enter query here"
-                    aria-describedby="basic-addon1">
-                    <!--</div>
-                    <div class="col-md-4" id="search-button">-->
-                    <button class="btn btn-outline-success my-2 my-sm-0 w-10" id="searchQuery" data-toggle="tooltip" title="Submit">Submit</button>
-                    <!--</div>-->
+                <!--<div class="col-md-8" id="search-content">
+                    <input type="text" id="searchId" class="form-control" placeholder="Please enter query here" aria-label="Please enter query here"
+                        aria-describedby="basic-addon1">
+                </div>-->
+
+                <div class="input-group" id="search-content">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input type="text" id="searchId" class="form-control" 
+                           placeholder="Query here"
+                           aria-label="Query here"
+                           autofocus>
+                     <button class="input-group-prepend btn" id="searchQuery" data-toggle="tooltip" title="Submit">
+                         <i class="fa fa-arrow-circle-right"></i>
+                    </button>
+                </div>
 
 
 
-            </div>
+                <!--<div class="col-md-4 alignCenter" id="search-button">
+                   
+                </div>-->
+
+
+
+            <!--</div>-->
         </div>
         <div class="row responseMsg" id="responseMsg">
-            
+
         </div>
     </div>
 
-    <div class="container-fluid h-100" id="footerId">
+    <div class="container-fluid fixed-bottom" id="footerId">
         <footer>@ Copyright 2018</footer>
     </div>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>

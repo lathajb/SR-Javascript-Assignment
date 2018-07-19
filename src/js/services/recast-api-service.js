@@ -22,7 +22,7 @@ export default class RecastApiService{
                 //body: JSON.stringify(data), // body data type must match "Content-Type" header
             })
             .then(response => response.json()) // parses response to JSON
-            .catch(error => console.error(`Fetch Error =\n`, error));
+            .catch(error => console.error(`Fetch Error =\n`, error.message));
 
      }
 }
