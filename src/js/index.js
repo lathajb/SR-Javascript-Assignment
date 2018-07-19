@@ -46,14 +46,9 @@ let collaboratorReqObj = {
 document.addEventListener('DOMContentLoaded', (event) => {
   // console.log(document.getElementById("searchQuery").textContent());
   $('[data-toggle="tooltip"]').tooltip();
-  $().alert();
   document.getElementById('searchQuery').addEventListener('click', invokeRecastApi);
 });
 
-
-function sampletest() {
-  methodToInvoke('issue1', 'colloborator');
-}
 
 function invokeRecastApi() {
   const searchQuery = document.getElementById('searchId').value;
@@ -97,8 +92,6 @@ function invokeRecastApi() {
         
       }
 
-      
-      
       methodToInvoke(queryName, invokeMethodType);
 
       //console.log(`query name :${JSON.stringify(data.results.entities.string[0].value)}`);
@@ -126,7 +119,7 @@ function methodToInvoke(queryName, invokeMethodType) {
   } else if (invokeMethodType === "reopen" || invokeMethodType === "close" || invokeMethodType === "update" ||  invokeMethodType === "modify") {
     widgetTemplate.updateIssue(issueReqObj);
   } else if (invokeMethodType === 'collaborator') {
-    widgetTemplate.createCollaborator(issueReqObj);
+    widgetTemplate.createCollaborator(collaboratorReqObj);
 
   }
 }
@@ -140,11 +133,23 @@ export function createRepository(queryName) {
   gitController.createRepository(queryName)
     .then((data) => {
       console.log(data);
-      window.confirm('Repository Created Successfully');
-      document.location.reload();
+      
+      if (data.message !== null &&  (data.message === "Not Found" || data.message === "Bad credentials")) {
+        renderConfirmMsg(data.message,"error");
+      } else {
+       
+        window.confirm('Repository Created Successfully');
+        var msg = 'Repository Created Successfully';
+        renderConfirmMsg(msg,"success");
+        //document.location.reload();
+      }
+
+
     }).catch((error) => {
       console.log('There has been a problem with your create repository operation: ', error.message);
-      window.confirm('Error While Creating Respository');
+      //window.confirm('Error While Creating Respository');
+      var msg = 'Error While Creating Collaborator';
+       renderConfirmMsg(msg,"error");
     });
 }
 
@@ -155,6 +160,8 @@ export function fetchAllIssues() {
       fetchIssuesList(allIssues);
     }).catch((error) => {
       console.log('There has been a problem with your fetch all issues for given repo operation: ', error.message);
+      var msg = 'Error While Creating Collaborator';
+       renderConfirmMsg(msg,"error");
     });
 }
 
@@ -165,10 +172,20 @@ export function fetchAllIssuesForSpecificRepo() {
   reqObj.repoName = repoName;
   gitController.getAllIssuesForSpecificRepo(reqObj.user, reqObj.repoName)
     .then((data) => {
-      console.log(data); allIssues = data;
-      fetchIssuesList(allIssues);
+      console.log(data); 
+      
+       if (data.message !== null &&  (data.message === "Not Found" || data.message === "Bad credentials")) {
+            renderConfirmMsg(data.message,"error");
+        } else {
+            allIssues = data;
+            fetchIssuesList(allIssues);
+            //document.location.reload();
+      }
+
     }).catch((error) => {
       console.log('There has been a problem with your fetch all issues for given repo operation: ', error.message);
+      var msg = 'Error While Creating Collaborator';
+       renderConfirmMsg(msg,"error");
     });
 }
 
@@ -180,11 +197,23 @@ export function createIssueForRepo(issueReqObj) {
   gitController.createIssueForRepo(issueReqObj)
     .then((data) => {
       console.log(JSON.stringify(data));
-      window.confirm('Issue Created Successfully');
-      document.location.reload();
+      
+      if (data.message !== null &&  (data.message === "Not Found" || data.message === "Bad credentials")) {
+        renderConfirmMsg(data.message,"error");
+      } else {
+       
+       window.confirm('Issue Created Successfully');
+       var msg = 'Issue Created Successfully';
+        renderConfirmMsg(msg,"success");
+        //document.location.reload();
+      }
+
+
     }).catch((error) => {
       console.log('There has been a problem with your create issue for repo operation: ', error.message);
-      window.confirm('Error While Creating Issue Successfully');
+      //window.confirm('Error While Creating Issue Successfully');
+      var msg = 'Error While Creating Issue';
+       renderConfirmMsg(msg,"error");
     });
 }
 
@@ -198,11 +227,24 @@ export function updateIssue(updateReqObject) {
   gitController.updateIssue(updateReqObject)
     .then((data) => {
       console.log(data);
-      window.confirm('Issue Updated Successfully');
-      document.location.reload();
+      
+      if (data.message !== null &&  (data.message === "Not Found" || data.message === "Bad credentials")) {
+        renderConfirmMsg(data.message,"error");
+      } else {
+       
+       window.confirm('Issue Updated Successfully');
+       var msg = 'Issue Updated Successfully';
+        renderConfirmMsg(msg,"success");
+        //document.location.reload();
+      }
+
+
+
     }).catch((error) => {
       console.log('There has been a problem with your update/open or reopen issue operation: ', error.message);
-      window.confirm('Error While Updating Issue Successfully');
+      //window.confirm('Error While Updating Issue Successfully');
+      var msg = 'Error While Creating Collaborator';
+      renderConfirmMsg(msg,"error");
     });
 }
 
@@ -213,41 +255,38 @@ export function createCollaborator(collaboratorReqObj) {
     .then((data) => {
       console.log(data);
 
-      if (data.message !== null && data.message === "Not Found") {
-        window.confirm('Repository or Collaborator Not Found');
+      if (data.message !== null &&  (data.message === "Not Found" || data.message === "Bad credentials")) {
+        //window.confirm('Repository or Collaborator Not Found');
         var msg = 'Repository or Collaborator Not Found';
-        renderConfirmMsg(msg);
+        renderConfirmMsg(data.message,"error");
       } else {
-        window.confirm('Collaborator Created Successfully');
        // document.location.reload();
        var msg = 'Collaborator Created Successfully';
-        renderConfirmMsg(msg);
+        renderConfirmMsg(msg,"success");
       }
 
-      //document.location.reload();
     }).catch((error) => {
       console.log('There has been a problem with your create collaborator operation: ', error.message);
-      window.confirm('Error While Creating Collaborator Successfully');
+      window.confirm('Error While Creating Collaborator');
+       var msg = 'Error While Creating Collaborator';
+       renderConfirmMsg(msg,"error");
     });
 }
 
 
-function closeMsgBox(){
-   $().alert();
-}
+function renderConfirmMsg(msg,msgType){
 
-
-function renderConfirmMsg(msg){
-
-  var succesMsg = document.createElement('div');
-  succesMsg.setAttribute('class','alert alert-success alert-dismissible fade show w-100');
-  succesMsg.setAttribute('role','alert');
-
-
-  var dangerMsg = document.createElement('div')
-  dangerMsg.setAttribute('class','alert alert-danger alert-dismissible fade show w-100');
-  dangerMsg.setAttribute('role','alert');
+  var msgRendered = document.createElement('div')
   
+  if(msgType === "error"){
+    
+    msgRendered.setAttribute('class','alert alert-danger alert-dismissible fade show w-100');
+    msgRendered.setAttribute('role','alert');
+  }else if( msgType === "success"){
+    
+    msgRendered.setAttribute('class','alert alert-success alert-dismissible fade show w-100');
+    msgRendered.setAttribute('role','alert');
+  }
 
   var strong = document.createElement('strong');
   var textNode = document.createTextNode(msg);
@@ -256,20 +295,20 @@ function renderConfirmMsg(msg){
   var closeButton = document.createElement('button');
   closeButton.setAttribute('type','button');
   closeButton.setAttribute('class','close');
+  closeButton.setAttribute('data-dismiss','alert');
   closeButton.setAttribute('aria-label','Close');
-  //closeButton.setAttribute('onclick','closeMsgBox()');
+  //closeButton.onclick = closeMsgBox;
 
   var xicon = document.createTextNode('x');
   var spanDiv = document.createElement('span');
   spanDiv.setAttribute('aria-hidden','true');
+  spanDiv.setAttribute('class','msg');
   spanDiv.append(xicon);
   closeButton.append(spanDiv);
 
-  succesMsg.append(strong);
-  succesMsg.append(closeButton);
+  msgRendered.append(strong);
+  msgRendered.append(closeButton);
 
   var header = document.getElementById('responseMsg');
-  header.append(succesMsg);  
+  header.append(msgRendered);  
 }
-
-

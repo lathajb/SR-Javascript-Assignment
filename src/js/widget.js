@@ -10,16 +10,16 @@ export default class WidgetTemplate {
   /**********************************Create repository template ******************** */
   createRepositoryTemplate(queryName) {
     $.get('./src/pages/createRepository.html', (result) => {
-      const widget = document.getElementById('createRepoWidget');
+      const widget = document.getElementById('createWidget');
 
       if (widget !== null) {
         const parentObj = document.getElementById('searchFeature');
-        parentObj.removeChild(document.getElementById('createRepoWidget'));
+        parentObj.removeChild(document.getElementById('createWidget'));
         // parentObj.append(result);
       }
       $('#searchFeature').append(result);
       $('#createRepository').val(queryName);
-      $('#createRepoWidget').ready(() => {
+      $('#createWidget').ready(() => {
         console.log(document.getElementById('confirmId'));
         document.getElementById('confirmId').addEventListener('click', createRepository.bind(null, queryName));
       });
@@ -30,17 +30,17 @@ export default class WidgetTemplate {
   /**********************************Create issue template ******************** */
   createIssueTemplate(issueReqObj) {
     $.get('./src/pages/createIssue.html', (result) => {
-      const widget = document.getElementById('createIssueWidget');
+      const widget = document.getElementById('createWidget');
 
       if (widget !== null) {
         const parentObj = document.getElementById('searchFeature');
-        parentObj.removeChild(document.getElementById('createIssueWidget'));
+        parentObj.removeChild(document.getElementById('createWidget'));
         // parentObj.append(result);
       }
 
       $('#searchFeature').append(result);
       $('#createIssue').val(issueReqObj.issueName);
-       $('#createIssueWidget').ready(() => {
+       $('#createWidget').ready(() => {
         console.log(document.getElementById('confirmId'));
         document.getElementById('confirmId').addEventListener('click', createIssueForRepo.bind(null, issueReqObj));
       });
@@ -51,11 +51,11 @@ export default class WidgetTemplate {
   /**********************************Update issue template ******************** */
   updateIssue(updateIssueReq) {
     $.get('./src/pages/updateIssue.html', (result) => {
-      const widget = document.getElementById('updateIssueWidget');
+      const widget = document.getElementById('createWidget');
 
       if (widget !== null) {
         const parentObj = document.getElementById('searchFeature');
-        parentObj.removeChild(document.getElementById('updateIssueWidget'));
+        parentObj.removeChild(document.getElementById('createWidget'));
         // parentObj.append(result);
       }
 
@@ -71,11 +71,11 @@ export default class WidgetTemplate {
    /**********************************create Collaborator template ******************** */
   createCollaborator(collaboratorReqObj) {
     $.get('./src/pages/collaborator.html', (result) => {
-      const widget = document.getElementById('createCollaboratorWidget');
+      const widget = document.getElementById('createWidget');
 
       if (widget !== null) {
         const parentObj = document.getElementById('searchFeature');
-        parentObj.removeChild(document.getElementById('createCollaboratorWidget'));
+        parentObj.removeChild(document.getElementById('createWidget'));
         // parentObj.append(result);
       }
 
@@ -93,11 +93,11 @@ export default class WidgetTemplate {
   /**********************************Fetch issues for specific repository template ******************** */
   fetchIssuesForRepositoryTemplate() {
     $.get('./src/pages/displayIssuesForRepo.html', (result) => {
-      const widget = document.getElementById('fetchIssues');
+      const widget = document.getElementById('createWidget');
 
       if (widget !== null) {
         const parentObj = document.getElementById('searchFeature');
-        parentObj.removeChild(document.getElementById('fetchIssues'));
+        parentObj.removeChild(document.getElementById('createWidget'));
         // parentObj.append(result);
       }
       $('#searchFeature').append(result);

@@ -1,13 +1,13 @@
 'usestrict'
 
 let url = 'https://api.github.com/';
-let accessToken = 'Bearer ac9df253c9a2561558278fa3563916bc23c502eb';
+let accessToken = 'Bearer 4fc6792073144930c884993b57ac5e9a24350f64';
 
 export default class GithubManageService{
 
     constructor(){
        console.log("Inside  GithubManageService layer");
-       const headers = { Authorization : 'Bearer ac9df253c9a2561558278fa3563916bc23c502eb'};
+       const headers = { Authorization : accessToken};
        
     } 
 
@@ -21,7 +21,7 @@ export default class GithubManageService{
                 mode: "cors",
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Authorization": accessToken,
                     "Content-Type": "application/json; charset=utf-8",
                 },
             })
@@ -36,7 +36,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Authorization": accessToken,
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 
@@ -70,7 +70,7 @@ export default class GithubManageService{
                 data: passData,
                 dataType: "json",
                 mode: "cors",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'BEARER ac9df253c9a2561558278fa3563916bc23c502eb'); }
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', accessToken); }
             }).done(function (res) {
                  resolve(res);
             }).fail(function (jqXHR, textStatus) {
@@ -96,7 +96,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Authorization": accessToken,
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data),
@@ -129,7 +129,7 @@ export default class GithubManageService{
             xhr.open("POST", url + "repos/lathajb/JavaScript-Test-Repo/issues");
             //xhr.setRequestHeader("Cache-Control", "no-cache");
             //xhr.setRequestHeader("Postman-Token", "d0644c4f-fd44-4369-8ea9-d7984e4ae17b");
-            xhr.setRequestHeader("Authorization", "token ac9df253c9a2561558278fa3563916bc23c502eb");
+            xhr.setRequestHeader("Authorization", accessToken);
             //xhr.setRequestHeader("Access-Control-Allow-Origin","https://api.github.com");
             xhr.send(JSON.stringify(data));
 
@@ -158,7 +158,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Authorization": accessToken,
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data), 
@@ -178,7 +178,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer ac9df253c9a2561558278fa3563916bc23c502eb",
+                    "Authorization": accessToken,
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data),
