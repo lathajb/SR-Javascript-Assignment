@@ -1,13 +1,13 @@
 'usestrict'
 
-let url = 'https://api.github.com/';
-let accessToken = 'Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c';
+const url = 'https://api.github.com/';
+const accessToken = 'Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5';
 
 export default class GithubManageService{
 
     constructor(){
        console.log("Inside  GithubManageService layer");
-       const headers = { Authorization : 'Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c'};
+       const headers = { Authorization : 'Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5'};
        
     } 
 
@@ -21,7 +21,7 @@ export default class GithubManageService{
                 mode: "cors",
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c",
+                    "Authorization": "Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5",
                     "Content-Type": "application/json; charset=utf-8",
                 },
             })
@@ -36,7 +36,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c",
+                    "Authorization": "Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 
@@ -70,7 +70,7 @@ export default class GithubManageService{
                 data: passData,
                 dataType: "json",
                 mode: "cors",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'BEARER 27f930ddccd06a4ba253a4bd4842bb9b8b06571c'); }
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'BEARER 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5'); }
             }).done(function (res) {
                  resolve(res);
             }).fail(function (jqXHR, textStatus) {
@@ -96,7 +96,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c",
+                    "Authorization": "Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data),
@@ -129,7 +129,7 @@ export default class GithubManageService{
             xhr.open("POST", url + "repos/lathajb/JavaScript-Test-Repo/issues");
             //xhr.setRequestHeader("Cache-Control", "no-cache");
             //xhr.setRequestHeader("Postman-Token", "d0644c4f-fd44-4369-8ea9-d7984e4ae17b");
-            xhr.setRequestHeader("Authorization", "token 27f930ddccd06a4ba253a4bd4842bb9b8b06571c");
+            xhr.setRequestHeader("Authorization", "token 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5");
             //xhr.setRequestHeader("Access-Control-Allow-Origin","https://api.github.com");
             xhr.send(JSON.stringify(data));
 
@@ -158,7 +158,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c",
+                    "Authorization": "Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data), 
@@ -178,7 +178,7 @@ export default class GithubManageService{
                 mode: "cors", 
                 credentials: "same-origin", 
                 headers: {
-                    "Authorization": "Bearer 27f930ddccd06a4ba253a4bd4842bb9b8b06571c",
+                    "Authorization": "Bearer 4c932bd341f36873fcd25cf3522fcaa19b5b9fc5",
                     "Content-Type": "application/json; charset=utf-8",
                 },
                 body: JSON.stringify(data),

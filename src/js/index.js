@@ -4,6 +4,7 @@
 // const recastai = require('recastai');
 import '../sass/styles.scss';
 import WidgetTemplate from './widget';
+import {renderConfirmMsg} from './widget';
 import GitHubManageController from './controllers/github-manage-controller';
 import RecastApiController from './controllers/recast-api-controller';
 
@@ -104,7 +105,7 @@ function invokeRecastApi() {
     }).catch((error) => {
       console.log('There has been a problem while Invoking Recast API: ', error.message);
       //window.confirm('Error While Invoking Recast API');
-      renderConfirmMsg(error.message,"error");
+      renderConfirmMsg('Error While Invoking Recast API',"error");
     });
 }
 
@@ -146,8 +147,6 @@ export function createRepository(queryName) {
         renderConfirmMsg(msg,"success");
         //document.location.reload();
       }
-
-
     }).catch((error) => {
       console.log('There has been a problem with your create repository operation: ', error.message);
       //window.confirm('Error While Creating Respository');
@@ -277,47 +276,3 @@ export function createCollaborator(collaboratorReqObj) {
 }
 
 
-function renderConfirmMsg(msg,msgType){
-  var respMsg = document.getElementById('msgRendered');
-  var header = document.getElementById('responseMsg');
-  if(respMsg !== null){
-    header.removeChild(respMsg);
-  }
-  var msgRendered = document.createElement('div')
-  
-  if(msgType === "error"){
-    
-    msgRendered.setAttribute('class','alert alert-danger alert-dismissible fade show w-100');
-    msgRendered.setAttribute('role','alert');
-    msgRendered.setAttribute('id','msgRendered');
-  }else if( msgType === "success"){
-    
-    msgRendered.setAttribute('class','alert alert-success alert-dismissible fade show w-100');
-    msgRendered.setAttribute('role','alert');
-    msgRendered.setAttribute('id','msgRendered');
-  }
-
-  var strong = document.createElement('strong');
-  var textNode = document.createTextNode(msg);
-  strong.append(textNode);
-
-  var closeButton = document.createElement('button');
-  closeButton.setAttribute('type','button');
-  closeButton.setAttribute('class','close');
-  closeButton.setAttribute('data-dismiss','alert');
-  closeButton.setAttribute('aria-label','Close');
-  //closeButton.onclick = closeMsgBox;
-
-  var xicon = document.createTextNode('x');
-  var spanDiv = document.createElement('span');
-  spanDiv.setAttribute('aria-hidden','true');
-  spanDiv.setAttribute('class','msg');
-  spanDiv.append(xicon);
-  closeButton.append(spanDiv);
-
-  msgRendered.append(strong);
-  msgRendered.append(closeButton);
-
- 
-  header.append(msgRendered);  
-}
